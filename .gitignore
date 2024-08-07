@@ -363,3 +363,5 @@ MigrationBackup/
 FodyWeavers.xsd
 /DFS-Out.txt
 /xxx.txt
+/DFS-OutShuffled.txt
+/DFS-OutShuffled2.txt
