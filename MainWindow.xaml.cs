@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using System.Diagnostics;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -55,7 +56,19 @@ namespace DemconFestivalSchedule
 
         private void CreateSchedule_Click(object sender, RoutedEventArgs e)
         {
-            Schedule.Improve(10000);
+            Stopwatch stopWatch = new();
+
+            CreateSchedule.IsEnabled = false;
+
+            int NumberOfIterations = int.Parse(TextBoxNumberOfIterations.Text);
+
+            stopWatch.Start();
+            Schedule.Improve(NumberOfIterations);
+            stopWatch.Stop();
+
+            TimeSpan ts = stopWatch.Elapsed;
+
+            TextBoxProcessingTime.Text = ts.TotalMilliseconds.ToString("F0");
         }
     }
 }
