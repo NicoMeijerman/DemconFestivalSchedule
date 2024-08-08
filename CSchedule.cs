@@ -11,17 +11,6 @@ namespace DemconFestivalSchedule
     {
         private readonly List<CStage> Stages = [];
 
-        public CSchedule()
-        // Default constructor, creating empty schedule
-        {
-        }
-
-        public CSchedule(CSchedule schedule)
-        // Copy constructor
-        {
-            this.Stages.AddRange(schedule.Stages);
-        }
-
         public void ReadFromFile(string fileName)
         {
             using StreamReader sw = File.OpenText(fileName);
@@ -47,7 +36,7 @@ namespace DemconFestivalSchedule
             sw.Close();
         }
 
-        public void MergeStages()
+        private void MergeStages()
         // Merges stages whenever possible
         {
             // Start with the last stage
@@ -78,7 +67,7 @@ namespace DemconFestivalSchedule
             }
         }
 
-        public void ShuffleStages()
+        private void ShuffleStages()
         // Puts the stages in the schedule in a random order
         // Also see https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_modern_algorithm
         // -- To shuffle an array a of n elements(indices 0..n-1):
@@ -96,10 +85,36 @@ namespace DemconFestivalSchedule
             }
         }
 
-        public bool TheOtherOneIsBetter(CSchedule otherOne)
-        // Determines which schedule is better
+        private bool IsBetterThan(CSchedule otherOne)
+        // Determines whether the current schedule is better than the otherOne
         {
-            return (otherOne.Stages.Count < this.Stages.Count);
+            return (this.Stages.Count < otherOne.Stages.Count);
+        }
+
+        public void Improve(int numberOfInterations)
+        {
+            CSchedule BestSchedule = this;
+
+            for (int i = 0; i < numberOfInterations; i++)
+            {
+                // Create new schedule, is copy from this
+                // Shuffle + merge it to see whether it is better
+                CSchedule NewSchedule = new();
+                NewSchedule.Stages.AddRange(this.Stages);
+
+                NewSchedule.ShuffleStages();
+
+                NewSchedule.MergeStages();
+
+                if (NewSchedule.IsBetterThan(BestSchedule))
+                {
+                    BestSchedule = NewSchedule;
+                }
+            }
+
+            // BestSchedule contains improved schedule, copy it to this
+            Stages.Clear();
+            Stages.AddRange(BestSchedule.Stages); 
         }
     }
 }
