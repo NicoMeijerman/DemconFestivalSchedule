@@ -10,6 +10,10 @@ namespace DemconFestivalSchedule
     internal class CSchedule
     {
         private readonly List<CStage> Stages = [];
+        public int NumberOfStages
+        { 
+            get { return Stages.Count; } 
+        }
 
         public void ReadFromFile(string fileName)
         {
@@ -113,6 +117,40 @@ namespace DemconFestivalSchedule
             // BestSchedule contains improved schedule, copy it to this
             Stages.Clear();
             Stages.AddRange(BestSchedule.Stages); 
+        }
+
+        public int StartTime()
+        {
+            if (Stages.Count == 0)
+            {
+                return 0;
+            }
+            else
+            {
+                int time = Stages[0].StartTime();
+                foreach (CStage stage in Stages)
+                {
+                    time = Math.Min(time, stage.StartTime());
+                }
+                return time;
+            }
+        }
+
+        public int EndTime()
+        {
+            if (Stages.Count == 0)
+            {
+                return 0;
+            }
+            else
+            {
+                int time = Stages[0].EndTime();
+                foreach (CStage stage in Stages)
+                {
+                    time = Math.Max(time, stage.EndTime());
+                }
+                return time;
+            }
         }
     }
 }

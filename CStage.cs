@@ -63,5 +63,14 @@ namespace DemconFestivalSchedule
             Shows.Sort(CShow.SortByStartTimeAscending);
         }
 
+        public int StartTime()
+        {
+            return (Shows.Count == 0) ? 0 : Shows[0].startTime;
+        }
+
+        public int EndTime()
+        {
+            return (Shows.Count == 0) ? 0 : Shows[^1].endTime;
+        }
     }
 }
