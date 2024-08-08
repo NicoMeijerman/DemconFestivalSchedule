@@ -8,22 +8,22 @@ namespace DemconFestivalSchedule
 {
     internal class CShow
     {
-        private string name = "";
-        private int startTime = -1;
-        private int endTime = -1;
+        private readonly string name;
+        private readonly int startTime;
+        private readonly int endTime;
 
-        public void ReadFromString(string s)
+        public CShow(string s)
+        // Constructs CShow using s, format expected "name starttime endtime", all separated by spaces
+        // No checking done so it can generate a runtime exception
         {
-            // Converts s to CShow, format expected "name starttime endtime", all separated by spaces
-            // No checking done
-
             string[] subs = s.Split(" ");
             this.name = subs[0];
             this.startTime = int.Parse(subs[1]);
             this.endTime = int.Parse(subs[2]);
         }
 
-        public string WriteToString()
+        public override string ToString()
+        // Converts CShow to string, format "name starttime endtime"
         {
             return name + " " + startTime + " " + endTime;
         }

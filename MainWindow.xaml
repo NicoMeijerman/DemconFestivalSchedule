@@ -7,8 +7,9 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Button x:Name="ReadFile" Content="Read file" HorizontalAlignment="Left" Height="56" Margin="182,77,0,0" VerticalAlignment="Top" Width="121" Click="ReadFile_Click"/>
-        <Button x:Name="WriteFile" Content="Write file" HorizontalAlignment="Left" Height="56" Margin="182,0,0,0" VerticalAlignment="Center" Width="121" Click="WriteFile_Click"/>
+        <Button x:Name="ReadFile" Content="Read shows" HorizontalAlignment="Left" Height="56" Margin="182,77,0,0" VerticalAlignment="Top" Width="121" Click="ReadFile_Click"/>
+        <Button x:Name="CreateSchedule" Content="Create schedule" HorizontalAlignment="Left" Height="56" Margin="182,200,0,0" VerticalAlignment="Top" Width="121" Click="CreateSchedule_Click"/>
+        <Button x:Name="WriteFile" Content="Write schedule" HorizontalAlignment="Left" Height="56" Margin="182,300,0,0" VerticalAlignment="Top" Width="121" Click="WriteFile_Click"/>
 
     </Grid>
 </Window>

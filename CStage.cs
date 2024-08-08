@@ -9,49 +9,50 @@ namespace DemconFestivalSchedule
 {
     internal class CStage
     {
-        private List<CShow> CShows = [];
+        private List<CShow> Shows = [];
 
-        public void AddShowFromString(string s)
+        public CStage(string s)
+        // Constructs CStage from s with only one Show, format expected name starttime endtime, all separated by spaces
+        // No checking done so it can generate a runtime exception
         {
-            // Converts s to CShow, format expected name starttime endtime, all separated by spaces
-            // No checking done
-            CShow cShow = new();
+            CShow cShow = new(s);
 
-            cShow.ReadFromString(s);
-            CShows.Add(cShow);
+            Shows.Add(cShow);
         }
 
-        public string WriteToString()
+        public override string ToString()
         {
             string s = "";
 
-            foreach (CShow cShow in CShows) 
+            foreach (CShow show in Shows) 
             { 
-                s += cShow.WriteToString() + " <-> "; 
+                s += show.ToString() + " <-> "; 
             }
             return s;
         }
 
         public List<CShow> GetShows()
         {
-            return CShows;
+            return Shows;
         }
 
         public void SetShows(List<CShow> shows)
         {
-            CShows = shows;
+            Shows = shows;
         }
 
-        public bool ConflictingShows(CStage stage)
+        public bool ConflictingShows(CStage otherStage)
+        // Checks whether the shows on otherStage conflict with the shows on this stage
         {
-            // Checks whether the shows on stage conflict with the current shows
-
+            // Create list of combined shows
             List<CShow> combinedShows = [];
             combinedShows.AddRange(this.GetShows());
-            combinedShows.AddRange(stage.GetShows());
+            combinedShows.AddRange(otherStage.GetShows());
 
-            SortShows();
+            // Order the shows on the stage in the correct order, using the start time
+            combinedShows.Sort(CShow.SortByStartTimeAscending);
 
+            // Check for overlap
             for (int i = 0; i < combinedShows.Count-1; i++)
             {
                 if (CShow.OverlappingShows(combinedShows[i],combinedShows[i+1]))
@@ -61,11 +62,14 @@ namespace DemconFestivalSchedule
             return false;
         }
 
-
-        private void SortShows()
+        public void Merge(CStage otherStage)
+        // Merges otherStage with the current one
+        // Only allowed if there are no overlapping shows (checked with ConflictingShows)
         {
-            // Orders the shows on the stage in the correct order, using the start time
-            CShows.Sort(CShow.SortByStartTimeAscending);
+            Shows.AddRange(otherStage.GetShows());
+
+            // Order the shows on the stage in the correct order, using the start time
+            Shows.Sort(CShow.SortByStartTimeAscending);
         }
 
     }

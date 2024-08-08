@@ -17,13 +17,15 @@ namespace DemconFestivalSchedule
     /// </summary>
     public partial class MainWindow : Window
     {
-        internal CSchedule cSchedule;
+        internal CSchedule OriginalSchedule;
+        internal CSchedule BestSchedule;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            cSchedule = new();
+            OriginalSchedule = new();
+            BestSchedule = OriginalSchedule;
         }
 
         private void ReadFile_Click(object sender, RoutedEventArgs e)
@@ -35,7 +37,8 @@ namespace DemconFestivalSchedule
 
             if (fileDialog.ShowDialog() == true)
             {
-                cSchedule.ReadFromFile(fileDialog.FileName);
+                OriginalSchedule.ReadFromFile(fileDialog.FileName);
+                ReadFile.IsEnabled = false;
             }
         }
 
@@ -48,7 +51,24 @@ namespace DemconFestivalSchedule
 
             if (fileDialog.ShowDialog() == true)
             {
-                cSchedule.WriteToFile(fileDialog.FileName);
+                BestSchedule.WriteToFile(fileDialog.FileName);
+            }
+        }
+
+        private void CreateSchedule_Click(object sender, RoutedEventArgs e)
+        {
+            for (int i = 0; i < 100000; i++)
+            {
+                CSchedule NewSchedule = new(OriginalSchedule);
+
+                NewSchedule.ShuffleStages();
+
+                NewSchedule.MergeStages();
+
+                if (BestSchedule.TheOtherOneIsBetter(NewSchedule))
+                {
+                    BestSchedule = NewSchedule;
+                }
             }
         }
     }
