@@ -70,10 +70,6 @@ namespace DemconFestivalSchedule
         private void ShuffleStages()
         // Puts the stages in the schedule in a random order
         // Also see https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_modern_algorithm
-        // -- To shuffle an array a of n elements(indices 0..n-1):
-        // for i from 0 to n−2 do
-        // j ← random integer such that i ≤ j <n
-        // exchange a[i] and a[j]
         {
             Random random = new();
 
@@ -81,7 +77,7 @@ namespace DemconFestivalSchedule
             {
                 int j = i + random.Next(Stages.Count-i);
 
-                (Stages[i], Stages[j]) = (Stages[j], Stages[i]);
+                (Stages[i], Stages[j]) = (Stages[j], Stages[i]); // Swap items
             }
         }
 
@@ -92,6 +88,8 @@ namespace DemconFestivalSchedule
         }
 
         public void Improve(int numberOfInterations)
+        // Improves the schedule by repeatly shuffling and merges stages
+        // and keeping the best one
         {
             CSchedule BestSchedule = this;
 

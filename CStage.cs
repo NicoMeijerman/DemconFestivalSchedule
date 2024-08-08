@@ -9,7 +9,8 @@ namespace DemconFestivalSchedule
 {
     internal class CStage
     {
-        private List<CShow> Shows = [];
+        // A stage contains a number of shows
+        private readonly List<CShow> Shows = [];
 
         public CStage(string s)
         // Constructs CStage from s with only one Show, format expected name starttime endtime, all separated by spaces
@@ -31,23 +32,13 @@ namespace DemconFestivalSchedule
             return s;
         }
 
-        public List<CShow> GetShows()
-        {
-            return Shows;
-        }
-
-        public void SetShows(List<CShow> shows)
-        {
-            Shows = shows;
-        }
-
         public bool ConflictingShows(CStage otherStage)
         // Checks whether the shows on otherStage conflict with the shows on this stage
         {
             // Create list of combined shows
             List<CShow> combinedShows = [];
-            combinedShows.AddRange(this.GetShows());
-            combinedShows.AddRange(otherStage.GetShows());
+            combinedShows.AddRange(this.Shows);
+            combinedShows.AddRange(otherStage.Shows);
 
             // Order the shows on the stage in the correct order, using the start time
             combinedShows.Sort(CShow.SortByStartTimeAscending);
@@ -66,7 +57,7 @@ namespace DemconFestivalSchedule
         // Merges otherStage with the current one
         // Only allowed if there are no overlapping shows (checked with ConflictingShows)
         {
-            Shows.AddRange(otherStage.GetShows());
+            Shows.AddRange(otherStage.Shows);
 
             // Order the shows on the stage in the correct order, using the start time
             Shows.Sort(CShow.SortByStartTimeAscending);

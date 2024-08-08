@@ -8,9 +8,10 @@ namespace DemconFestivalSchedule
 {
     internal class CShow
     {
-        private readonly string name;
-        private readonly int startTime;
-        private readonly int endTime;
+        // Members are public readonly so they can be retrieved directly but not modified
+        public readonly string name;
+        public readonly int startTime;
+        public readonly int endTime;
 
         public CShow(string s)
         // Constructs CShow using s, format expected "name starttime endtime", all separated by spaces
@@ -29,11 +30,13 @@ namespace DemconFestivalSchedule
         }
 
         public static int SortByStartTimeAscending(CShow x, CShow y)
+        // Function needed for sorting lists
         {
             return (x.startTime - y.startTime);
         }
 
         public static bool OverlappingShows(CShow x, CShow y)
+        // Determines whether two shows are overlapping
         {
             return (x.endTime >= y.startTime && x.startTime <= y.endTime);
         }
