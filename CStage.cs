@@ -10,7 +10,10 @@ namespace DemconFestivalSchedule
     internal class CStage
     {
         // A stage contains a number of shows
-        private readonly List<CShow> Shows = [];
+        public List<CShow> Shows
+        {
+            get;
+        } = [];
 
         public CStage(string s)
         // Constructs CStage from s with only one Show, format expected name starttime endtime, all separated by spaces

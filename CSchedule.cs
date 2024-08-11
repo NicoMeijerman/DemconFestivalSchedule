@@ -9,7 +9,11 @@ namespace DemconFestivalSchedule
 {
     internal class CSchedule
     {
-        private readonly List<CStage> Stages = [];
+        public List<CStage> Stages
+        {
+            get;
+        } = [];
+
         public int NumberOfStages
         { 
             get { return Stages.Count; } 

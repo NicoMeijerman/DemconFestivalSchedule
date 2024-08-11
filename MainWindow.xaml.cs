@@ -73,53 +73,13 @@ namespace DemconFestivalSchedule
             TextBoxProcessingTime.Text = ts.TotalMilliseconds.ToString("F0");
         }
 
-        private void InitializeScheduleTable(int numberOfColumns, int numberOfRows)
-        {
-            const int borderWidth = 1;
-
-            UniformGrid grid = new()
-            {
-                Rows = numberOfRows,
-                Columns = numberOfColumns
-            };
-
-            for (int i = 0; i < numberOfRows; i++)
-            {
-                for (int j = 0; j < numberOfColumns; j++)
-                {
-                    Border border = new()
-                    {
-                        Height = 30,
-                        BorderThickness = new Thickness(borderWidth, borderWidth, borderWidth, borderWidth),
-                        BorderBrush = Brushes.Black,
-                        //Background = background,
-                    };
-
-                    TextBlock textBlock = new()
-                    {
-                        Text = i.ToString() + "+" + j.ToString(),
-                        VerticalAlignment = VerticalAlignment.Center,
-                        HorizontalAlignment = HorizontalAlignment.Center,
-                        FontSize = 8,
-                    };
-
-                    border.Child = textBlock;
-
-                    grid.Children.Add(border);
-                }
-            }
-
-            ScheduleTable.Child = grid;
-        }
-
         private void ShowSchedule_Click(object sender, RoutedEventArgs e)
         {
+            ScheduleTable.Children.Clear();
 
-            int st = Schedule.StartTime();
-            int et = Schedule.EndTime();
+            CDrawSchedule drawSchedule = new(Schedule);
 
-            InitializeScheduleTable(1+et-st,1+Schedule.NumberOfStages);
-
+            drawSchedule.Draw(ScheduleTable);
         }
     }
 }
