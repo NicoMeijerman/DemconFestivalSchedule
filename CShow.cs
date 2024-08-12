@@ -13,11 +13,6 @@ namespace DemconFestivalSchedule
         public readonly int startTime;
         public readonly int endTime;
 
-        public CShow()
-        // Default constructor
-        {
-        }
-
         public CShow(string s)
         // Constructs CShow using s, format expected "name starttime endtime", all separated by spaces
         // No checking done so it can generate a runtime exception

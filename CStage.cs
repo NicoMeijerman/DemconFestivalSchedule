@@ -15,16 +15,17 @@ namespace DemconFestivalSchedule
             get;
         } = [];
 
-        public CStage() { }
-
+        public CStage(CStage stage)
+        // Copy constructor
+        {
+            Shows.AddRange(stage.Shows);
+        }
 
         public CStage(string s)
         // Constructs CStage from s with only one Show, format expected name starttime endtime, all separated by spaces
         // No checking done so it can generate a runtime exception
         {
-            CShow cShow = new(s);
-
-            Shows.Add(cShow);
+            Shows.Add(new(s));
         }
 
         public override string ToString()
@@ -33,7 +34,7 @@ namespace DemconFestivalSchedule
 
             foreach (CShow show in Shows) 
             { 
-                s += show.ToString() + " <-> "; 
+                s += show.ToString() + " ++ "; 
             }
             return s;
         }

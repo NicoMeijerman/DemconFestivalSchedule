@@ -27,10 +27,9 @@ namespace DemconFestivalSchedule
         public CSchedule(CSchedule schedule)
         // Copy constructor, copies schedule
         {
-            for (int i = 0; i < schedule.NumberOfStages; i++)
+            foreach (CStage stage in schedule.Stages)
             {
-                Stages.Add(new());
-                Stages[i].Shows.AddRange(schedule.Stages[i].Shows);
+                Stages.Add(new(stage));
             }
         }
 
