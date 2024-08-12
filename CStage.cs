@@ -15,6 +15,9 @@ namespace DemconFestivalSchedule
             get;
         } = [];
 
+        public CStage() { }
+
+
         public CStage(string s)
         // Constructs CStage from s with only one Show, format expected name starttime endtime, all separated by spaces
         // No checking done so it can generate a runtime exception

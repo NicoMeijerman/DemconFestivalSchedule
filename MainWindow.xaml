@@ -15,6 +15,10 @@
         <Label Content="Processing time [ms]" HorizontalAlignment="Left" Margin="10,177,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="TextBoxNumberOfIterations" HorizontalAlignment="Left" Height="20" Margin="30,93,0,0" TextWrapping="Wrap" Text="10000" VerticalAlignment="Top" Width="100"/>
         <TextBox x:Name="TextBoxProcessingTime" HorizontalAlignment="Left" Height="20" Margin="30,208,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="100" IsReadOnly="True"/>
-        <Canvas x:Name="ScheduleTable" Margin="150,10,10,10"/>
+        <Border Margin="150,10,10,10" BorderThickness="1,1,1,1" BorderBrush="Black" >
+            <ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" >
+                <Canvas x:Name="ScheduleTable" Height="2000" Width="2000"/>
+            </ScrollViewer>
+        </Border>
     </Grid>
 </Window>

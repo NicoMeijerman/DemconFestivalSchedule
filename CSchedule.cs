@@ -19,6 +19,21 @@ namespace DemconFestivalSchedule
             get { return Stages.Count; } 
         }
 
+        public CSchedule()
+        // Default constructor, creating empty schedule
+        {
+        }
+
+        public CSchedule(CSchedule schedule)
+        // Copy constructor, copies schedule
+        {
+            for (int i = 0; i < schedule.NumberOfStages; i++)
+            {
+                Stages.Add(new());
+                Stages[i].Shows.AddRange(schedule.Stages[i].Shows);
+            }
+        }
+
         public void ReadFromFile(string fileName)
         {
             using StreamReader sw = File.OpenText(fileName);
@@ -99,14 +114,13 @@ namespace DemconFestivalSchedule
         // Improves the schedule by repeatly shuffling and merges stages
         // and keeping the best one
         {
-            CSchedule BestSchedule = this;
+            CSchedule BestSchedule = new(this);
 
             for (int i = 0; i < numberOfInterations; i++)
             {
                 // Create new schedule, is copy from this
                 // Shuffle + merge it to see whether it is better
-                CSchedule NewSchedule = new();
-                NewSchedule.Stages.AddRange(this.Stages);
+                CSchedule NewSchedule = new(this);
 
                 NewSchedule.ShuffleStages();
 

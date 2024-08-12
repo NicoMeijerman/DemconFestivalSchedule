@@ -40,12 +40,19 @@ namespace DemconFestivalSchedule
                 {
                     Text = "Stage " + (i + 1).ToString(),
                     VerticalAlignment = VerticalAlignment.Center,
-                    HorizontalAlignment = HorizontalAlignment.Left,
+                    HorizontalAlignment = HorizontalAlignment.Center,
                 };
 
-                Canvas.SetTop(textBlock, firstRowHeight + i * rowHeight);
-                Canvas.SetLeft(textBlock, 0);
-                canvas.Children.Add(textBlock);
+                Border border = new()
+                {
+                    Child = textBlock,
+                    Height = rowHeight,
+                    Width = firstColumnWidth,
+                };
+
+                Canvas.SetTop(border, firstRowHeight + i * rowHeight);
+                Canvas.SetLeft(border, 0);
+                canvas.Children.Add(border);
             }
         }
 
@@ -62,9 +69,16 @@ namespace DemconFestivalSchedule
                     LayoutTransform = new RotateTransform(-90),
                 };
 
-                Canvas.SetTop(textBlock, 0);
-                Canvas.SetLeft(textBlock, firstColumnWidth + (i - startTime) * columnWidth);
-                canvas.Children.Add(textBlock);
+                Border border = new()
+                {
+                    Child = textBlock,
+                    Height = firstRowHeight,
+                    Width = columnWidth,
+                };
+
+                Canvas.SetTop(border, 0);
+                Canvas.SetLeft(border, firstColumnWidth + (i - startTime) * columnWidth);
+                canvas.Children.Add(border);
             }
         }
 
