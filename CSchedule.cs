@@ -9,6 +9,8 @@ namespace DemconFestivalSchedule
 {
     internal class CSchedule
     {
+        // A schedule contains a number of stages
+        // By using the get, it can only be read-accessed
         public List<CStage> Stages
         {
             get;
@@ -34,6 +36,8 @@ namespace DemconFestivalSchedule
         }
 
         public void ReadFromFile(string fileName)
+        // Reads an initial schedule from file
+        // Every stage contains only one show
         {
             using StreamReader sw = File.OpenText(fileName);
             while (!sw.EndOfStream)
@@ -49,6 +53,7 @@ namespace DemconFestivalSchedule
         }
 
         public void WriteToFile(string fileName)
+        // Writes the schedule to a file, very simple format
         {
             using StreamWriter sw = File.CreateText(fileName);
             foreach (CStage cStage in Stages)
@@ -72,7 +77,7 @@ namespace DemconFestivalSchedule
                 {
                     if (Stages[i].ConflictingShows(Stages[stageToMergeWithOthers]))
                     {
-                        // CStage[i] can not be merged, try next
+                        // Stage[i] can not be merged, try next
                         i++;
                     }
                     else
@@ -109,15 +114,15 @@ namespace DemconFestivalSchedule
             return (this.Stages.Count < otherOne.Stages.Count);
         }
 
-        public void Improve(int numberOfInterations)
-        // Improves the schedule by repeatly shuffling and merges stages
+        public CSchedule Revamp(int numberOfInterations)
+        // Creates a better the schedule by repeatly shuffling and merges stages
         // and keeping the best one
         {
-            CSchedule BestSchedule = new(this);
+            CSchedule BestSchedule = this;
 
             for (int i = 0; i < numberOfInterations; i++)
             {
-                // Create new schedule, is copy from this
+                // Create new schedule, is deep copy from this
                 // Shuffle + merge it to see whether it is better
                 CSchedule NewSchedule = new(this);
 
@@ -131,12 +136,12 @@ namespace DemconFestivalSchedule
                 }
             }
 
-            // BestSchedule contains improved schedule, copy it to this
-            Stages.Clear();
-            Stages.AddRange(BestSchedule.Stages); 
+            // BestSchedule contains improved schedule
+            return BestSchedule; 
         }
 
         public int StartTime()
+        // Returns the start time of all shows in this schedule
         {
             if (Stages.Count == 0)
             {
@@ -154,6 +159,7 @@ namespace DemconFestivalSchedule
         }
 
         public int EndTime()
+        // Returns the end time of all shows in this schedule
         {
             if (Stages.Count == 0)
             {

@@ -10,13 +10,14 @@ namespace DemconFestivalSchedule
     internal class CStage
     {
         // A stage contains a number of shows
+        // By using the get, it can only be read-accessed
         public List<CShow> Shows
         {
             get;
         } = [];
 
         public CStage(CStage stage)
-        // Copy constructor
+        // Copy constructor, needed to perform a deep copy
         {
             Shows.AddRange(stage.Shows);
         }
@@ -29,6 +30,7 @@ namespace DemconFestivalSchedule
         }
 
         public override string ToString()
+        // Conversion method to string
         {
             string s = "";
 
@@ -62,7 +64,7 @@ namespace DemconFestivalSchedule
 
         public void Merge(CStage otherStage)
         // Merges otherStage with the current one
-        // Only allowed if there are no overlapping shows (checked with ConflictingShows)
+        // Only allowed if there are no overlapping shows (check with ConflictingShows)
         {
             Shows.AddRange(otherStage.Shows);
 
@@ -71,11 +73,13 @@ namespace DemconFestivalSchedule
         }
 
         public int StartTime()
+        // Returns the start time of the shows on this stage
         {
             return (Shows.Count == 0) ? 0 : Shows[0].startTime;
         }
 
         public int EndTime()
+        // Returns the end time of the shows on this stage
         {
             return (Shows.Count == 0) ? 0 : Shows[^1].endTime;
         }
