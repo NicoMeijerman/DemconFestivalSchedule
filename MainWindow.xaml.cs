@@ -40,8 +40,10 @@ namespace DemconFestivalSchedule
 
             if (fileDialog.ShowDialog() == true)
             {
+                // Clear the original schedule and let best schedule point at it again.
+                OriginalSchedule.Clear();
+                BestSchedule = OriginalSchedule;
                 OriginalSchedule.ReadFromFile(fileDialog.FileName);
-                ReadFile.IsEnabled = false;
             }
         }
 

@@ -35,6 +35,11 @@ namespace DemconFestivalSchedule
             }
         }
 
+        public void Clear()
+        {
+            Stages.Clear();
+        }
+
         public void ReadFromFile(string fileName)
         // Reads an initial schedule from file
         // Every stage contains only one show
