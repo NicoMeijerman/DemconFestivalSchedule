@@ -17,7 +17,7 @@
         <TextBox x:Name="TextBoxProcessingTime" HorizontalAlignment="Left" Height="20" Margin="30,208,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="100" IsReadOnly="True"/>
         <Border Margin="150,10,10,10" BorderThickness="1,1,1,1" BorderBrush="Black" >
             <ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" >
-                <Canvas x:Name="ScheduleTable" Height="2000" Width="2000"/>
+                <Canvas x:Name="ScheduleTable"/>
             </ScrollViewer>
         </Border>
     </Grid>

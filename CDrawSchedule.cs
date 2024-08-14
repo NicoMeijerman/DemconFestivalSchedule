@@ -110,17 +110,38 @@ namespace DemconFestivalSchedule
                     Canvas.SetTop(border, firstRowHeight + i * rowHeight);
                     Canvas.SetLeft(border, firstColumnWidth + (shows[j].startTime - startTime) * columnWidth);
                     canvas.Children.Add(border);
-
                 }
             }
         }
 
+        private static Size FindCanvasSizeForAllObjects(Canvas canvas)
+        // Returns a size that encloses all objects on the canvas.
+        {
+            double bottom = 0;
+            double right = 0;
+
+            foreach (FrameworkElement element in canvas.Children)
+            {
+                double posX = Canvas.GetLeft(element);
+                right = Math.Max(posX + element.Width, right);
+                double posY = Canvas.GetTop(element);
+                bottom = Math.Max(posY + element.Height, bottom);
+            }
+
+            return new(right, bottom);
+        }
+
         public void Draw(Canvas canvas)
-        // Draws the schedule on the canvas
+        // Draws the schedule on the canvas.
         {
             DrawFirstColumn(canvas);
             DrawFirstRow(canvas);
             DrawShows(canvas);
+
+            // Resize canvas
+            Size size = FindCanvasSizeForAllObjects(canvas);
+            canvas.Width = size.Width;
+            canvas.Height = size.Height;
         }
     }
 }
