@@ -20,15 +20,15 @@ namespace DemconFestivalSchedule
     /// </summary>
     public partial class MainWindow : Window
     {
-        internal CSchedule OriginalSchedule;
-        internal CSchedule BestSchedule;
+        internal CSchedule Schedule;
+        internal CStage ShowsToBeScheduled;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            OriginalSchedule = new();
-            BestSchedule = OriginalSchedule;
+            Schedule = new();
+            ShowsToBeScheduled = new();
         }
 
         private void ReadFile_Click(object sender, RoutedEventArgs e)
@@ -40,10 +40,9 @@ namespace DemconFestivalSchedule
 
             if (fileDialog.ShowDialog() == true)
             {
-                // Clear the original schedule and let best schedule point at it again.
-                OriginalSchedule.Clear();
-                BestSchedule = OriginalSchedule;
-                OriginalSchedule.ReadFromFile(fileDialog.FileName);
+                // Clear the schedule
+                Schedule.Clear();
+                ShowsToBeScheduled.ReadFromFile(fileDialog.FileName);
             }
         }
 
@@ -56,30 +55,17 @@ namespace DemconFestivalSchedule
 
             if (fileDialog.ShowDialog() == true)
             {
-                BestSchedule.WriteToFile(fileDialog.FileName);
+                Schedule.WriteToFile(fileDialog.FileName);
             }
         }
 
-        private void CreateSchedule_Click(object sender, RoutedEventArgs e)
+        private void CreateAndShowSchedule_Click(object sender, RoutedEventArgs e)
         {
-            Stopwatch stopWatch = new();
+            Schedule.CreateSchedule(ShowsToBeScheduled);
 
-            int NumberOfIterations = int.Parse(TextBoxNumberOfIterations.Text);
-
-            stopWatch.Start();
-            BestSchedule = OriginalSchedule.Revamp(NumberOfIterations);
-            stopWatch.Stop();
-
-            TimeSpan ts = stopWatch.Elapsed;
-
-            TextBoxProcessingTime.Text = ts.TotalMilliseconds.ToString("F0");
-        }
-
-        private void ShowSchedule_Click(object sender, RoutedEventArgs e)
-        {
             ScheduleTable.Children.Clear();
 
-            CDrawSchedule drawSchedule = new(BestSchedule);
+            CDrawSchedule drawSchedule = new(Schedule);
 
             drawSchedule.Draw(ScheduleTable);
         }

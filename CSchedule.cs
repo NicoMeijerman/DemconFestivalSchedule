@@ -21,40 +21,43 @@ namespace DemconFestivalSchedule
             get { return Stages.Count; } 
         }
 
-        public CSchedule()
-        // Default constructor, creating empty schedule
-        {
-        }
-
-        public CSchedule(CSchedule schedule)
-        // Copy constructor, copies schedule
-        {
-            foreach (CStage stage in schedule.Stages)
-            {
-                Stages.Add(new(stage));
-            }
-        }
-
         public void Clear()
         {
             Stages.Clear();
         }
 
-        public void ReadFromFile(string fileName)
-        // Reads an initial schedule from file
-        // Every stage contains only one show
+        public void CreateSchedule(CStage ShowsToSchedule)
         {
-            using StreamReader sw = File.OpenText(fileName);
-            while (!sw.EndOfStream)
+            foreach (CShow show in ShowsToSchedule.Shows)
             {
-                string? s = sw.ReadLine();
-                if (s != null)
+                // Determine first available time/stage
+                // By giving first available time a maximum value,
+                // the first to be scheduled shows creates a stage
+                int FirstAvailableTime = int.MaxValue;
+                CStage FirstAvailableStage = new();
+                foreach (CStage stage in Stages)
                 {
-                    CStage stage = new(s);
+                    if (stage.EndTime() < FirstAvailableTime)
+                    {
+                        FirstAvailableTime = stage.EndTime();
+                        FirstAvailableStage = stage;
+                    }
+                }
+
+                // Now add the show to the schedule
+                if (show.startTime > FirstAvailableTime)
+                { 
+                    // Show fits in current schedule after a previous show
+                    FirstAvailableStage.Shows.Add(show);
+                }
+                else
+                {
+                    // Show doesn't fit, create a new stage
+                    CStage stage = new();
+                    stage.Shows.Add(show);
                     Stages.Add(stage);
                 }
             }
-            sw.Close();
         }
 
         public void WriteToFile(string fileName)
@@ -66,83 +69,6 @@ namespace DemconFestivalSchedule
                 sw.WriteLine(cStage.ToString());
             }
             sw.Close();
-        }
-
-        private void MergeStages()
-        // Merges stages whenever possible
-        {
-            // Start with the last stage
-            int stageToMergeWithOthers = Stages.Count - 1;
-
-            while (stageToMergeWithOthers > 1)
-            {
-                int i = 0;
-                // Try all stages up to the one we want to merge with others
-                while (i < stageToMergeWithOthers)
-                {
-                    if (Stages[i].ConflictingShows(Stages[stageToMergeWithOthers]))
-                    {
-                        // Stage[i] can not be merged, try next
-                        i++;
-                    }
-                    else
-                    {
-                        // Merge stages and remove the one that is merged
-                        Stages[i].Merge(Stages[stageToMergeWithOthers]);
-                        Stages.RemoveAt(stageToMergeWithOthers);
-                        stageToMergeWithOthers--;
-                    }
-                }
-
-                // And now try the previous one
-                stageToMergeWithOthers--;
-            }
-        }
-
-        private void ShuffleStages()
-        // Puts the stages in the schedule in a random order
-        // Also see https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle#The_modern_algorithm
-        {
-            Random random = new();
-
-            for (int i = 0; i < Stages.Count-1; i++)
-            {
-                int j = i + random.Next(Stages.Count-i);
-
-                (Stages[i], Stages[j]) = (Stages[j], Stages[i]); // Swap items
-            }
-        }
-
-        private bool IsBetterThan(CSchedule otherOne)
-        // Determines whether the current schedule is better than the otherOne
-        {
-            return (this.Stages.Count < otherOne.Stages.Count);
-        }
-
-        public CSchedule Revamp(int numberOfInterations)
-        // Creates a better the schedule by repeatly shuffling and merges stages
-        // and keeping the best one
-        {
-            CSchedule BestSchedule = this;
-
-            for (int i = 0; i < numberOfInterations; i++)
-            {
-                // Create new schedule, is deep copy from this
-                // Shuffle + merge it to see whether it is better
-                CSchedule NewSchedule = new(this);
-
-                NewSchedule.ShuffleStages();
-
-                NewSchedule.MergeStages();
-
-                if (NewSchedule.IsBetterThan(BestSchedule))
-                {
-                    BestSchedule = NewSchedule;
-                }
-            }
-
-            // BestSchedule contains improved schedule
-            return BestSchedule; 
         }
 
         public int StartTime()

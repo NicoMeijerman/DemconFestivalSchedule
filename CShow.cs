@@ -34,11 +34,5 @@ namespace DemconFestivalSchedule
         {
             return (x.startTime - y.startTime);
         }
-
-        public static bool OverlappingShows(CShow x, CShow y)
-        // Determines whether two shows are overlapping
-        {
-            return (x.endTime >= y.startTime && x.startTime <= y.endTime);
-        }
     }
 }

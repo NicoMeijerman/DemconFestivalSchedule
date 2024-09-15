@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,19 +17,6 @@ namespace DemconFestivalSchedule
             get;
         } = [];
 
-        public CStage(CStage stage)
-        // Copy constructor, needed to perform a deep copy
-        {
-            Shows.AddRange(stage.Shows);
-        }
-
-        public CStage(string s)
-        // Constructs CStage from s with only one Show, format expected name starttime endtime, all separated by spaces
-        // No checking done so it can generate a runtime exception
-        {
-            Shows.Add(new(s));
-        }
-
         public override string ToString()
         // Conversion method to string
         {
@@ -41,35 +29,23 @@ namespace DemconFestivalSchedule
             return s;
         }
 
-        public bool ConflictingShows(CStage otherStage)
-        // Checks whether the shows on otherStage conflict with the shows on this stage
+        public void ReadFromFile(string fileName)
+        // Reads an initial schedule from file
+        // Every stage contains only one show
         {
-            // Create list of combined shows
-            List<CShow> combinedShows = [];
-            combinedShows.AddRange(this.Shows);
-            combinedShows.AddRange(otherStage.Shows);
-
-            // Order the shows on the stage in the correct order, using the start time
-            combinedShows.Sort(CShow.SortByStartTimeAscending);
-
-            // Check for overlap
-            for (int i = 0; i < combinedShows.Count-1; i++)
+            Shows.Clear();
+            using StreamReader sw = File.OpenText(fileName);
+            while (!sw.EndOfStream)
             {
-                if (CShow.OverlappingShows(combinedShows[i],combinedShows[i+1]))
-                    return true;
+                string? s = sw.ReadLine();
+                if (s != null)
+                {
+                    CShow show = new(s); 
+                    Shows.Add(show);
+                }
             }
-
-            return false;
-        }
-
-        public void Merge(CStage otherStage)
-        // Merges otherStage with the current one
-        // Only allowed if there are no overlapping shows (check with ConflictingShows)
-        {
-            Shows.AddRange(otherStage.Shows);
-
-            // Order the shows on the stage in the correct order, using the start time
             Shows.Sort(CShow.SortByStartTimeAscending);
+            sw.Close();
         }
 
         public int StartTime()
